@@ -1,10 +1,10 @@
 //Initializing and Declaring dependancies
 const express=require("express");
-const MongoClient=require("mongodb").MongoClient;
 const ejs=require("ejs");
+const ejsLayouts=require("express-ejs-layouts");
+const MongoClient=require("mongodb").MongoClient;
 const uri=require("./config/db");
 const client=new MongoClient(uri,{ useNewUrlParser: true, useUnifiedTopology: true });  
-const ejsLayouts=require("express-ejs-layouts");
 
 //Connecting to Database
 client.connect(err=>{
@@ -14,6 +14,9 @@ client.connect(err=>{
 
 //Express Application
 const app=express();
+
+//Public files and folders
+app.use(express.static("./public"))
 
 //View engine
 app.set("view engine","ejs");

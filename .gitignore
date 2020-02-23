@@ -1,2 +1,3 @@
 #ignore unwanted files
 /node_modules
+/config/db.js
