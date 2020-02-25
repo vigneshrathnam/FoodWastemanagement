@@ -20,8 +20,6 @@ app.use(express.static("./public"))
 
 //View engine
 app.set("view engine","ejs");
-
-//Ejs layout setup
 app.use(ejsLayouts);
 
 //Routes
