@@ -23,10 +23,7 @@ app.set("view engine","ejs");
 app.use(ejsLayouts);
 
 //Routes
-app.get("*",(req,res)=>{
-    res.locals.index=req.url;
-    res.render("index");
-});
+app.use("/",require("./routes/index.js"));
 
 //Accesing server on port 3000
 app.listen(3000,()=>{
