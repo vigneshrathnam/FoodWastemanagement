@@ -7,10 +7,10 @@ const uri=require("./config/db");
 const client=new MongoClient(uri,{ useNewUrlParser: true, useUnifiedTopology: true });  
 
 //Connecting to Database
-// client.connect(err=>{
-//     if(err) throw err;
-//     console.log("MongoDB connected");
-// });
+client.connect(err=>{
+    if(err) throw err;
+    console.log("MongoDB connected");
+});
 
 //Express Application
 const app=express();
@@ -23,20 +23,20 @@ app.set("view engine","ejs");
 app.use(ejsLayouts);
 
 //Routes
-// app.use("/",require("./routes/index.js"));
+app.use("/",require("./routes/index.js"));
 
+// app.get("/",(req,res)=>{
+//     res.render("index");
+// });
 
-app.get("/",(req,res)=>{
-    res.render("index");
-});
+// app.get("/signup",(req,res)=>{
+//     res.render("signup");
+// });
 
-app.get("/signup",(req,res)=>{
-    res.render("signup");
-});
+// app.get("/login",(req,res)=>{
+//     res.render("login");
+// });
 
-app.get("/login",(req,res)=>{
-    res.render("login");
-});
 
 
 
