@@ -1,3 +1,4 @@
-const uri="mongodb+srv://vicky:vicky@123@cluster0-2fh28.mongodb.net/test?retryWrites=true&w=majority";
+var Datastore = require('nedb')
+  , db = new Datastore({ filename: './db/users.db', corruptAlertThreshold: 1 ,autoload: true });
 
-module.exports=uri;
+module.exports=db;

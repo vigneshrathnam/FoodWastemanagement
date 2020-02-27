@@ -2,18 +2,40 @@
 const express=require("express");
 const ejs=require("ejs");
 const ejsLayouts=require("express-ejs-layouts");
-const MongoClient=require("mongodb").MongoClient;
-const uri=require("./config/db");
-const client=new MongoClient(uri,{ useNewUrlParser: true, useUnifiedTopology: true });  
+const port=process.env.port || 3000;
+const layout=require("express-ejs-layouts");
+const flash=require("connect-flash");
+const session=require("express-session");
+const passport=require("passport");
 
-//Connecting to Database
-client.connect(err=>{
-    if(err) throw err;
-    console.log("MongoDB connected");
-});
+//Passport initialization
+require('./config/passport')(passport);
+
+//To use post request
+app.use(express.urlencoded({extended: true}));
+
+//Session
+app.use(session({  secret:"$ecret0101", resave: true, saveUninitialized: true}));
 
 //Express Application
 const app=express();
+
+
+//Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+//flash
+app.use(flash());
+
+//Global variables
+app.use((req,res,next)=>{                          
+     res.locals.success_msg=req.flash("success_msg");
+     res.locals.error_msg=req.flash("error_msg");
+    res.locals.error=req.flash("error");
+    next();                                   
+      });
+
 
 //Public files and folders
 app.use(express.static("./public"))
@@ -25,22 +47,7 @@ app.use(ejsLayouts);
 //Routes
 app.use("/",require("./routes/index.js"));
 
-// app.get("/",(req,res)=>{
-//     res.render("index");
-// });
-
-// app.get("/signup",(req,res)=>{
-//     res.render("signup");
-// });
-
-// app.get("/login",(req,res)=>{
-//     res.render("login");
-// });
-
-
-
-
 //Accesing server on port 3000
-app.listen(3000,()=>{
-    console.log("Server started at port 3000");
-});
+
+//Port Addressing
+app.listen(port,()=>console.log(`Listening at http://localhost:${port}`));
