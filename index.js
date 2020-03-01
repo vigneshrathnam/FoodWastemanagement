@@ -8,6 +8,9 @@ const flash=require("connect-flash");
 const session=require("express-session");
 const passport=require("passport");
 
+//Express Application
+const app=express();
+
 //Passport initialization
 require('./config/passport')(passport);
 
@@ -16,10 +19,6 @@ app.use(express.urlencoded({extended: true}));
 
 //Session
 app.use(session({  secret:"$ecret0101", resave: true, saveUninitialized: true}));
-
-//Express Application
-const app=express();
-
 
 //Passport Middleware
 app.use(passport.initialize());
@@ -33,9 +32,9 @@ app.use((req,res,next)=>{
      res.locals.success_msg=req.flash("success_msg");
      res.locals.error_msg=req.flash("error_msg");
     res.locals.error=req.flash("error");
+    res.locals.user=req.user;
     next();                                   
       });
-
 
 //Public files and folders
 app.use(express.static("./public"))
@@ -45,9 +44,8 @@ app.set("view engine","ejs");
 app.use(ejsLayouts);
 
 //Routes
-app.use("/",require("./routes/index.js"));
+app.use("/",require("./routes/index"));
+app.use("/",require("./routes/users"));
 
 //Accesing server on port 3000
-
-//Port Addressing
 app.listen(port,()=>console.log(`Listening at http://localhost:${port}`));
