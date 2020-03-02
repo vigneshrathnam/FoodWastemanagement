@@ -4,6 +4,15 @@ const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const db=require("../config/db");
 const bcrypt=require("bcryptjs");
 
+router.get("/support",(req,res)=> {
+  res.send("Support page");
+});
+
+router.get("/about",(req,res)=> {
+  res.send("Support page");
+});
+
+
 
 router.get("/",forwardAuthenticated,(req,res)=>{
 	res.locals.title="Welcome to Node.js";
