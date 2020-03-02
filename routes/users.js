@@ -25,9 +25,9 @@ router.get("/users",(req,res)=>{
 
 
 router.post("/register",(req,res)=>{
-  var {name , email, password, password2}=req.body;
+  var {name , phno, password, password2}=req.body;
   var errors=[];
-  if(!name || !email||!password ||!password2 ){
+  if(!name || !phno||!password ||!password2 ){
 	errors.push({msg: "All fields are Required"});
   }
   if(name.length<4 ||  name.length>24){
@@ -39,26 +39,26 @@ router.post("/register",(req,res)=>{
   if(password!==password2 ){
         errors.push({msg: "The password you entered dont match each other"});
   }
-  if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
-	errors.push({msg: "The entered Email is not valid"});}
+  if( parseInt(phno)=== NaN || phno.toString().length!==10){
+	errors.push({msg: "The entered Mobile No. is not valid"});}
 
   if(errors.length>0){
    return res.render("register",{
   title: "Registration Page",
   errors,
   name,
-  email,
+  phno,
   password,
   password2
 });
 }
   else{
-  db.findOne({email },(err, doc)=> {
+  db.findOne({phno },(err, doc)=> {
 	  if(doc){
-   errors.push({msg: "This Email Already registered"});
+   errors.push({msg: "This Mobile No. Already registered"});
 	  res.locals.title="Registration Page";
   return res.render("register",{                      errors,                                           name,
-  email,
+  phno,
   password,
   password2
   });
@@ -66,7 +66,7 @@ router.post("/register",(req,res)=>{
 	  else{
 	let userData={
 	  name,
-	  email,
+	  phno,
 	  password,
 	  timeStamp: Date.now()
 	}
@@ -110,26 +110,26 @@ router.get("/forgotpass",(req,res)=>{
 });
 
 router.post("/forgotpass",(req,res)=>{
-   const { email }=req.body;
+   const { phno }=req.body;
    let errors=[];
    res.locals.title="Forget Password";
-   if(!email){
-	errors.push({ msg: "Email is Required" });
+   if(!phno){
+	errors.push({ msg: "Mobile No. is Required" });
    }
   
-   if(!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))){
-        errors.push({msg: "The entered Email is not valid"});
+   if( parseInt(phno)=== NaN || phno.length!=10){
+        errors.push({msg: "The entered Mobile No. is not valid"});
 }
 
    if(errors.length>0){
-   res.render("forgot",{ errors, email  });
+   res.render("forgot",{ errors, phno  });
    }
    else
    {
-	db.findOne({ email },(err,user)=>{
+	db.findOne({ phno },(err,user)=>{
 		if(err) throw err;
 		else if(!user){
-			req.flash("error_msg","This Email is Not Registered");
+			req.flash("error_msg","This Mobile No. is Not Registered");
 			res.redirect("/forgotpass");
 		}
 		else{                                                         req.flash("success_msg","A confirmation message is sent to your mail");

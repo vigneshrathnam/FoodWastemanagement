@@ -21,7 +21,8 @@ router.get("/",forwardAuthenticated,(req,res)=>{
 
 
 router.get("/dashboard",ensureAuthenticated,(req,res)=>{
-	const { user } = req;
+  const { user } = req;
+  console.log(user);
 	res.locals.title="Welcome "+user.name;
 	const { edit }=req.query;
         res.render("dashboard",{ user,edit});
@@ -51,7 +52,7 @@ router.post("/dashboard",ensureAuthenticated,(req,res)=>{         var {name , pa
 else{ 
   const newData={ 
   name,
-  email: user.email,
+  phno: user.phhno,
   password,
   timeStamp: user.timeStamp
 

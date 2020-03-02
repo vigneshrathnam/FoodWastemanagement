@@ -5,12 +5,12 @@ const bcrypt=require("bcryptjs");
 
 module.exports = function(passport) {
   passport.use(
-    new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
+    new LocalStrategy({ usernameField: 'phno' }, (phno, password, done) => {
       // Match user
 	    
-      db.findOne({ email },(err,user) => {
+      db.findOne({ phno },(err,user) => {
         if (!user) {
-          return done(null, false, { message: 'That email is not registered' });
+          return done(null, false, { message: 'That Number is not registered' });
         }
 
         // Match password

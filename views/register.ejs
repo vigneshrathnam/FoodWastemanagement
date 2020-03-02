@@ -24,14 +24,15 @@
           />
         </div>
         <div class="form-group">
-          <label for="email">Email</label>
+          <label for="phno">Mobile Number</label>
           <input
-            type="email"
+            type="number"
             id="email"
-            name="email"
+            step="1"
+            name="phno"
             class="form-control"
-            placeholder="Enter Email"
-            value="<%= typeof email != 'undefined' ? email : '' %>"
+            placeholder="Enter your Mobile no."
+            value="<%= typeof phno != 'undefined' ? phno : '' %>"
           />
         </div>
         <div class="form-group">
