@@ -1,3 +1,2 @@
-#ignore unwanted files
 /node_modules
-/db/
+/db
