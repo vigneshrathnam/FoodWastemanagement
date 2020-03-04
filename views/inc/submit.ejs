@@ -1,33 +1,64 @@
-<h2 class="text-center mt-4">Update Info</h2>
-<%if(typeof errors != 'undefined'){%>         <%errors.forEach((error)=>{%>                 <div class="alert alert-warning alert-dismissible fade show" role="alert">            <button type="button" class="close" data-dismiss="alert" aria-label="Close">              <span aria-hidden="true">&times;</span>   </button>                                   <%=error.msg%>                            </div>                                                                                    <%})%>                                    <%}%>
-<%if(success_msg!=""){%>                            <div class="alert alert-success alert-dismissible fade show" role="alert">            <button type="button" class="close" data-dismiss="alert" aria-label="Close">              <span aria-hidden="true">&times;</span>   </button>                                   <%=success_msg%>                            </div>                                <%}%>
-<%if(error_msg!=""){%>                            <div class="alert alert-warning alert-dismissible fade show" role="alert">            <button type="button" class="close" data-dismiss="alert" aria-label="Close">              <span aria-hidden="true">&times;</span>   </button>                                   <%=error_msg%>                            </div>                                <%}%>
-<form action="/dashboard?edit" method="POST">                                                   <div class="form-group">                      <label for="name">Name</label>
-          <input                                        type="name"                                 id="name"                                   name="name"                                 class="form-control"                        placeholder="Enter Name"                    value="<%=  typeof name != 'undefined' ? name :  user.name %>"                                 />                                        </div>
-<div class="form-group">                      <label for="email">Email</label>
-          <input
-            type="text" disabled
-            id="email"       
-	    name="email"
-	    class="form-control"
-            placeholder="Enter Email"
-            value="<%= user.email%>"
-          />
+<h2 class="text-center mt-4">Food Details</h2>
+<%if(fileSuccessMsg!=""){%>                      
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">           
+     <span aria-hidden="true">&times;</span>  
+    </button>                                
+        <%=fileSuccessMsg%>                    
+  </div>                          
+<%}%>
+<%if(fileErrorMsg!==undefined || fileErrorMsg !== null || fileErrorMsg !== {}){%>    
+  <% fileErrorMsg.forEach(error => { %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">       
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">         
+        <span aria-hidden="true">&times;</span> 
+      </button>                           
+          <%=error.message%>                         
+     </div>                             
+  <% }) %>                        
+<%}%>
+<form method="post" action="/submitFood" enctype="multipart/form-data">               
+  <div class="form-group">                 
+     <label for="quantity">
+       <span class="text-danger">Quantity (in Kg)</span>
+      </label>
+      <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Enter Quantity" value="<%=  typeof quantity != 'undefined' ? quantity :  "" %>"/>         
+  </div>
+  <div class="form-group">                    
+      <label for="location">Location</label>
+          <input type="text" id="location" name="location" class="form-control" placeholder="Enter Location" value="<%= typeof quantity != 'undefined' ? quantity :  "" %>"/>
         </div>
-        <div class="form-group">                      <label for="password">New Password</label>
-          <input                                        type="password"                             id="password"                               name="password"                             class="form-control"                        placeholder="Create New Password"           value="<%=  typeof password != 'undefined' ? password : "" %>"
-	  />                                 
-	    </div>                                      <div class="form-group">
-	<div class="form-group">                      <label for="password2">Confirm Password</label>                                         <input                                        type="password"                             id="password2"                              name="password2"                            class="form-control"
-            placeholder="Confirm Password" 
-	    value="<%=  typeof password2 != 'undefined' ? password2 : "" %>"
-	    />                                        </div>
-	<div class="row">
-	<div class="col-sm-6 mb-2">
-        <button type="submit" class="btn btn-primary btn-block">                                  Update
-        </button></div>
-	<div class="col-sm-6 mb-2">                      <a href="/dashboard" class="btn btn-secondary btn-block">
-          Back
-        </a></div>
+        <div class="form-group">        
+          <label for="photo">Photo</label>
+          <div class="form-group">
+            <div class="text-center bg-light p-4 m-2" id="filename">Selected filename will visible here</div>
+          </div>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+            </div>
+            <div class="custom-file">
+              <input type="file" value="Choose some file" id="photo" name="photo" class="custom-file-input" id="inputGroupFile01"
+                aria-describedby="inputGroupFileAddon01">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>  
+  </div>                                    
+  
+  <div class="row">
+  <div class="col-sm-6 mb-2">
+      <button type="submit" class="btn btn-primary btn-block">                                  Add
+      </button></div>
+  <div class="col-sm-6 mb-2">        
+    <a href="/dashboard?edit" class="btn btn-secondary btn-block">Edit Profile</a></div>
 	</div>
       </form>
+<script>
+  var photo=document.getElementById("photo");
+  var fileName=document.getElementById("filename")
+  photo.addEventListener("change",(e)=> {
+    var filename=e.target.value.split("\\");
+    var len=filename.length-1;
+    fileName.innerText=`You have Selected ${filename[len]}`;
+  })
+</script>

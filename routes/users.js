@@ -21,7 +21,7 @@ router.get("/users",(req,res)=>{
 		db.find({},(err,docs)=>{
 		res.json(docs);
 });
-                                                                      });
+});
 
 
 router.post("/register",(req,res)=>{
@@ -57,11 +57,7 @@ router.post("/register",(req,res)=>{
 	  if(doc){
    errors.push({msg: "This Mobile No. Already registered"});
 	  res.locals.title="Registration Page";
-  return res.render("register",{                      errors,                                           name,
-  phno,
-  password,
-  password2
-  });
+  return res.render("register",{ errors, name, phno, password, password2 });
 }
 	  else{
 	let userData={
@@ -75,10 +71,13 @@ bcrypt.genSalt(10, function(err, salt) {
         if(err) throw err;
 	else{
 	  userData.password=hash;
-	  db.insert(userData,(err, newDocs)=> {          if(err) throw err;                                else console.log("A user registered");
+	  db.insert(userData,(err, newDocs)=> {   
+      if(err) throw err;                    
+      else console.log("A user registered");
 
 });
-	req.flash("success_msg","You're now Registered. Login to continue");                               res.redirect("/login");
+  req.flash("success_msg","You're now Registered. Login to continue");                   
+           res.redirect("/login");
 	}
     });
 });
@@ -132,8 +131,9 @@ router.post("/forgotpass",(req,res)=>{
 			req.flash("error_msg","This Mobile No. is Not Registered");
 			res.redirect("/forgotpass");
 		}
-		else{                                                         req.flash("success_msg","A confirmation message is sent to your mail");
-                        res.redirect("/forgotpass");
+    else{                
+      req.flash("success_msg","A confirmation message is sent to your mail");
+      res.redirect("/forgotpass");
                 }
 
 	});

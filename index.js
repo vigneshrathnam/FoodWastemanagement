@@ -7,6 +7,8 @@ const layout=require("express-ejs-layouts");
 const flash=require("connect-flash");
 const session=require("express-session");
 const passport=require("passport");
+const cookieParser=require("cookie-parser");
+const bodyParser=require("body-parser");
 
 //Express Application
 const app=express();
@@ -15,7 +17,9 @@ const app=express();
 require('./config/passport')(passport);
 
 //To use post request
-app.use(express.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 //Session
 app.use(session({  secret:"$ecret0101", resave: true, saveUninitialized: true}));
@@ -29,11 +33,13 @@ app.use(flash());
 
 //Global variables
 app.use((req,res,next)=>{                          
-     res.locals.success_msg=req.flash("success_msg");
-     res.locals.error_msg=req.flash("error_msg");
-    res.locals.error=req.flash("error");
-    res.locals.user=req.user;
-    next();                                   
+  res.locals.success_msg=req.flash("success_msg");
+  res.locals.error_msg=req.flash("error_msg");
+  res.locals.error=req.flash("error");
+  res.locals.user=req.user;
+  res.locals.fileSuccessMsg=req.flash("fileSuccess_msg");
+  res.locals.fileErrorMsg=req.flash("fileErr_msg");
+  next();                                   
       });
 
 //Public files and folders
