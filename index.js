@@ -8,7 +8,6 @@ const flash=require("connect-flash");
 const session=require("express-session");
 const passport=require("passport");
 const cookieParser=require("cookie-parser");
-const bodyParser=require("body-parser");
 
 //Express Application
 const app=express();
@@ -17,8 +16,8 @@ const app=express();
 require('./config/passport')(passport);
 
 //To use post request
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //Session

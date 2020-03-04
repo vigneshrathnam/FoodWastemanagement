@@ -4,38 +4,9 @@ const router=express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 const db=require("../config/db");
 const bcrypt=require("bcryptjs");
-const multer=require("multer");
 const path=require("path");
 const submitdb=require("../config/FoodData");
-const multiparty=require("multiparty");
-const util=require("util");
-
-//file upload storage setup
-const storage= multer.diskStorage({
-  destination: "./public/uploads",
-  filename: (req,file,cb) => {
-    cb(null,file.fieldname+"-"+Date.now()+path.extname(file.originalname));
-  }
-});
-
-//init multer upload 
-const upload=multer({
-  storage,
-  fileFilter: (req,file,cb)=> {
-    const filetypes = /jpeg|jpg|png|gif/;
-    // Check ext
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    // Check mime
-    const mimetype = filetypes.test(file.mimetype);
-  
-    if(mimetype && extname){
-      return cb(null,true);
-    } else {
-      cb('Error: Only Images is supported!');
-    }
-    }
-  
-}).single("photo");
+const upload=require("./upload.js");
 
 //Routers
 router.get("/support",(req,res)=> {
@@ -45,8 +16,6 @@ router.get("/support",(req,res)=> {
 router.get("/about",(req,res)=> {
   res.send("Support page");
 });
-
-
 
 router.get("/",(req,res)=>{
 	res.locals.title="Food waste management";
@@ -114,71 +83,78 @@ bcrypt.genSalt(10, function(err, salt) {
 }
 });
 
+router.use((req,res,next)=> {
+  res.locals.quantity=req.query.quantity;
+  res.locals.location=req.query.location;
+})
+
 router.post("/submitFood",ensureAuthenticated,(req,res)=> {
   let errors=[];
-  var location='',quantity=0;
-  console.log(req.body.location);
+  var location,quantity;
   upload(req,res,(err)=> {
     if (err) {
-      errors.push({ message : err });
+      errors.push({ message : err.message });
       req.flash("fileErr_msg",errors);
-      return res.redirect("/dashboard");
+      return res.redirect(`/dashboard?location=${req.body.location}&quantity=${req.body.quantity}`);
     }
     else {
-      if(req.file === undefined) {
+      location=req.body.location || "";
+      quantity=req.body.quantity || 0;
+      console.log(location,quantity)
+      if(req.file == undefined) {
         errors.push({ message : "No file is selected" });
       }
-    }
-    });
-  if(!quantity || !location) {
-   errors.push({  message: "All fields are required" });
-  }
-  
-  if(parseInt(quantity) === NaN) {
-   errors.push({  message: "Number is required for quantity" });
-  }
-  
-  if(!(quantity>=1 && quantity<1000)) {
-   errors.push({  message: "quantity must be greater than 1 kg and atmost of 999 kg" });
-  }
-  
-  
-  if(!(location.length>=3 && location.length<=50)) {
+      //
+      
+if(!quantity || !location) {
+  errors.push({  message: "All fields are required" });
+ }
+ 
+ if(parseInt(quantity) === NaN) {
+  errors.push({  message: "Number is required for quantity" });
+ }
+ 
+ if(!(quantity>=1 && quantity<1000)){
+  errors.push({  message: "quantity must be greater than 1 kg and atmost of 999 kg" });
+ }
+ 
+ 
+ if(typeof location != undefined && location != "" && location != null) {
+   if (!(location.length>=3 && location.length<=50))
    errors.push({  message: "location  length must be greater than 2 characters and maximum of 50 characters" });
-  }
+ }
+ 
+    if(errors.length>0) {
+      req.flash("fileErr_msg",errors);
+      return res.redirect(`/dashboard?location=${req.body.location}&quantity=${req.body.quantity}`);
+    }
+ 
+    else {
+      console.log(req.file)
+        //Database code goes here
+      const doc={
+        location,
+        quantity,
+        imgPath: req.file.filename,
+        postedBy: req.user.name,
+        timeStamp: Date.now()
+      }
+ 
+      submitdb.insert(doc,(err,docs)=> {
+        if(err) {
+          errors.push({ message : "Some err has been occured" });
+          req.flash("fileErr_msg",errors);
+          return res.redirect("/dashboard");
+        }
+        if(docs) {
+          req.flash("fileSuccess_msg","Your response have been saved");
+          res.redirect("/dashboard");
+        }
+      });
+    } 
+    }
+  });
   
-     if(errors.length>0) {
-       req.flash("fileErr_msg",errors);
-       return res.redirect("/dashboard");
-     }
-  
-     else {
-  
-         //Database code goes here
-       const doc={
-         location,
-         quantity,
-         imgPath: req.file.filename,
-         postedBy: req.user.name,
-         timeStamp: Date.now()
-       }
-  
-       submitdb.insert(doc,(err,docs)=> {
-         if(err) {
-           errors.push({ message : "Some error has been occured" });
-           req.flash("fileErr_msg",errors);
-           return res.redirect("/dashboard");
-         }
-         if(docs) {
-           req.flash("fileSuccess_msg","Your response have been saved");
-           res.redirect("/dashboard");
-         }
-       });
-     
-     }
-  
-   
-
 });
 
 module.exports=router;
