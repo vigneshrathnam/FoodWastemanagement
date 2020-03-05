@@ -1,0 +1,8 @@
+<% if (viewType==1) { %>
+    <%- include("./includes/users")  %> 
+<% } else if (viewType==2) { %>
+    <%- include("./includes/food")  %> 
+<% } else { %>
+    <h1 class="text-danger">Bad Query...</h1>
+    <p class="text-dark pl-5">Use the navigation tabs to  surf... </p>
+<% } %> 

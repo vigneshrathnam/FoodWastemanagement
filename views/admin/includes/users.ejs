@@ -1,0 +1,19 @@
+<h2 class="text-dark">List of users</h2>
+<table class="table table-bordered table-striped">
+    <tr class="bg-dark text-light">
+        <th>S.No.</th>
+        <th>Name</th>
+        <th>Mobile No.</th>
+    </tr>
+    <%  if(docs.length>0) { %>
+        <% docs.forEach((doc,index) => { %>
+            <tr>
+                <td><%= index+1 %></td>
+                <td><%= doc.name %></td>
+                <td><%= doc.phno %></td>
+            </tr>
+        <% }) %>
+    <% } else { %>
+    <h4>No Records found</h4>
+    <% } %> 
+</table>

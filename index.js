@@ -2,12 +2,13 @@
 const express=require("express");
 const ejs=require("ejs");
 const ejsLayouts=require("express-ejs-layouts");
-const port=process.env.port || 3000;
+const port=process.env.port || 80;
 const layout=require("express-ejs-layouts");
 const flash=require("connect-flash");
 const session=require("express-session");
 const passport=require("passport");
 const cookieParser=require("cookie-parser");
+const logger=require("morgan");
 
 //Express Application
 const app=express();
@@ -16,6 +17,7 @@ const app=express();
 require('./config/passport')(passport);
 
 //To use post request
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -51,6 +53,7 @@ app.use(ejsLayouts);
 //Routes
 app.use("/",require("./routes/index"));
 app.use("/",require("./routes/users"));
+app.use("/",require("./routes/admin"));
 
-//Accesing server on port 3000
+//Accesing server on port 80
 app.listen(port,()=>console.log(`Listening at http://localhost:${port}`));

@@ -1,0 +1,23 @@
+<h2 class="text-dark">List of users</h2>
+<table class="table table-bordered table-responsive table-striped">
+    <tr class="bg-dark text-light">
+        <th>S.No.</th>
+        <th>Image</th>
+        <th>Username</th>
+        <th>Location</th>
+        <th>Quantity <span class="text-danger">in Kg(s)</span></th>
+    </tr>
+    <%  console.log(foods);if(foods.length>0) { %>
+        <% foods.forEach((doc,index) => { %>
+            <tr>
+                <td><%= index+1 %></td>
+                <td ><a href="<%= doc.imgPath %> "><img class="img-responsive " width="200px" height="auto" src="<%= doc.imgPath %>" alt="Image Posted By <%= doc.postedBy %>"></a></td>
+                <td><%= doc.postedBy %></td>
+                <td><%= doc.location %></td>
+                <td><%= doc.quantity %></td>
+            </tr>
+        <% }) %>
+    <% } else { %>
+    <h4>No Records found</h4>
+    <% } %> 
+</table>

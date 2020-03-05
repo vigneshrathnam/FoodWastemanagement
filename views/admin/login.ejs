@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to continue</title>
+    <style>
+        body {
+            display:  flex;
+            height: 100vh;
+            align-items: center;
+            justify-content:  center;
+            background-color: lightgray;
+            font-size: 20px;
+        }
+        .content {
+            padding: 20px 40px;
+            background-color: #ffffff;
+            border-radius: 30px;
+            text-align:  center;
+            margin-bottom: 10px;
+            box-shadow: #888888 10px 10px 10px  ;
+        }
+        .danger {
+            padding: 5px;
+            background-color: red;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        
+        .warning {
+            padding: 5px;
+            background-color: yellow;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            padding: 5px;
+            background-color: green;
+            color: #000000;
+            margin-bottom: 10px;
+        }
+
+        code {
+            background-color: yellow;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <% var warn=`<div class="danger"> 12345 is your default password please change it in <code>routes/admin.js</code> </div>`; %> 
+    <div class="content">
+        <h1>Login for Admin</h1>
+        <% if(typeof type!== undefined){ %>
+            <% if (parseInt(type) === 1) { %>
+                <div class="warning"> Login to view that Resource</div>  
+            <% } %>  
+                <%  if (parseInt(type) === 2) { %> 
+                <div class="warning"> Password is incorrect </div>
+            <% } %>  
+            <%if (parseInt(type) === 3){ %>
+                <div class="success"> Logged out successfully! </div>
+            <% } %>
+           <% } %> 
+        <%- (password === "12345")?warn:"" %> 
+        <%- typeof err !== undefined?``:`<div class="warning"> ${err} </div>`; %> 
+        <form action="/admin" method="post">
+            <div>
+                <label for='password'>
+                    Password:
+                </label><br>
+                <input id="password" type="password" name="password">
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+
+        </form>
+    </div>
+    
+</body>
+</html>

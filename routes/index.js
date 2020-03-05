@@ -6,7 +6,7 @@ const db=require("../config/db");
 const bcrypt=require("bcryptjs");
 const path=require("path");
 const submitdb=require("../config/FoodData");
-const upload=require("./upload.js");
+const upload=require("./utils/upload.js");
 
 //Routers
 router.get("/support",(req,res)=> {
@@ -14,7 +14,7 @@ router.get("/support",(req,res)=> {
 });
 
 router.get("/about",(req,res)=> {
-  res.send("Support page");
+  res.send("About page");
 });
 
 router.get("/",(req,res)=>{
@@ -25,9 +25,9 @@ router.get("/",(req,res)=>{
 
 router.get("/dashboard",ensureAuthenticated,(req,res)=>{
   const { user } = req;
-	res.locals.title="Welcome "+user.name;
-	const { edit }=req.query;
-        res.render("dashboard",{ user,edit});
+  res.locals.title="Welcome "+user.name;
+	const { edit,quantity,location }=req.query;
+        res.render("dashboard",{ user,edit,quantity,location });
       });                      
 
 
@@ -83,11 +83,6 @@ bcrypt.genSalt(10, function(err, salt) {
 }
 });
 
-router.use((req,res,next)=> {
-  res.locals.quantity=req.query.quantity;
-  res.locals.location=req.query.location;
-})
-
 router.post("/submitFood",ensureAuthenticated,(req,res)=> {
   let errors=[];
   var location,quantity;
@@ -122,20 +117,21 @@ if(!quantity || !location) {
  if(typeof location != undefined && location != "" && location != null) {
    if (!(location.length>=3 && location.length<=50))
    errors.push({  message: "location  length must be greater than 2 characters and maximum of 50 characters" });
- }
- 
+  }
+  console.log(req.file)
+  
     if(errors.length>0) {
       req.flash("fileErr_msg",errors);
       return res.redirect(`/dashboard?location=${req.body.location}&quantity=${req.body.quantity}`);
     }
  
     else {
-      console.log(req.file)
         //Database code goes here
+        let imgPath="/uploads/"+req.file.filename;
       const doc={
         location,
         quantity,
-        imgPath: req.file.filename,
+        imgPath,
         postedBy: req.user.name,
         timeStamp: Date.now()
       }
