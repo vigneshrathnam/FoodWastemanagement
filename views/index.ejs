@@ -8,36 +8,23 @@
   </ul>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="/images/black.png" alt="Los Angeles" class="img-container">
-      <div class="carousel-caption">
+      <img src="/images/banner.png" alt="Los Angeles" class="img">
+      <div class="carousel-caption" style="text-shadow: #000000 0px 0px 10px ;">
         <h3>Chennai's Food waste managemnt </h3>
                 <p>We are here to help the poor and needy who is suffering to get their food</p>
-        <button class="btn btn-primary">Our previous missions </button>
+        <a href='/login' class="btn btn-primary">Get Started! </a>
       </div>   
     </div>
-    <div class="carousel-item">
-      <img src="/images/black.png" class="img-container"  alt="Chicago">
-      <div class="carousel-caption">
-        <h3>About Us!</h3>
-        <p>Our crew include 4 members and we will take the excess or waste food in your area.
-          Click below to know more about us!
-        </p>
-        <button class="btn btn-primary pull">Click here!</button>
-      </div>   
+</div>
+</div>
+<div class="card card-body">
+  <h2 class="text-dark text-center mb-5">Login or Register to Continue...</h2>
+  <div class="row">
+      <div class="col-sm-6"><a href="/login" class="btn btn-primary btn-block">Login</a></div>
+    <div class="col-sm-6"><a href="/register" class="btn btn-primary btn-block">Register</a></div>
     </div>
-    <div class="carousel-item">
-      <img src="/images/black.png" class="img-container"  alt="New York">
-      <div class="carousel-caption">
-        <h3>So why are you waiting!</h3>
-        <p>Click the below button to sign in/ register to continue</p>
-        <button class="btn btn-primary pull">Get started</button>
-      </div>   
+    <div class="">
+      <% msg=''; %> 
+      <%- include("contact") %> 
     </div>
-  </div>
-  <a class="carousel-control-prev" href="#demo" data-slide="prev">
-    <span class="carousel-control-prev-icon"></span>
-  </a>
-  <a class="carousel-control-next" href="#demo" data-slide="next">
-    <span class="carousel-control-next-icon"></span>
-  </a>
 </div>

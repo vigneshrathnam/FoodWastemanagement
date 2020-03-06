@@ -54,6 +54,7 @@ app.use(ejsLayouts);
 app.use("/",require("./routes/index"));
 app.use("/",require("./routes/users"));
 app.use("/",require("./routes/admin"));
+app.use("/",require("./routes/contact"));
 
 //Accesing server on port 80
 app.listen(port,()=>console.log(`Listening at http://localhost:${port}`));

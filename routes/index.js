@@ -9,12 +9,9 @@ const submitdb=require("../config/FoodData");
 const upload=require("./utils/upload.js");
 
 //Routers
-router.get("/support",(req,res)=> {
-  res.send("Support page");
-});
 
 router.get("/about",(req,res)=> {
-  res.send("About page");
+  res.render("about");
 });
 
 router.get("/",(req,res)=>{

@@ -9,23 +9,26 @@
     <title>Food Waste Management System</title>
     <!-- Bootstrap CDN's-->
     <link rel="stylesheet" href="/css/bootstrap.min.css" >
-    <link rel="stylesheet" type="text/css" href="/css/main.css"
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
         <div id="top" class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4  mb-5 bg-white border-bottom shadow-sm">
             <h5 class="my-0 mr-md-auto font-weight-bold"><span class="text-warning"> Chennai</span><span class="text-success">Food</span><span class="text-dark">Org</span> </h5>
             <nav class="my-2 my-md-0 mr-md-3">
                 <a class="p-2 text-dark" href="/">Home</a>
-                <a class="p-2 text-dark" href="/about">About Us</a>
-                <a class="p-2 text-dark" href="/suggest">Feedback</a>
                 <%- typeof user!= "object"?guest:usr;%>
+                <a class="p-2 text-dark" href="/about">About Us</a>
             </nav>
-            <a class="btn btn-outline-success" href="/goals">Our Vision!</a>
+            <% if(typeof user!="object"){ %> 
+            <a class="btn btn-outline-success" href="/register">Get Started!</a>
+            <% } else { %>
+                <a class="btn btn-outline-info" href="/logout">Logout</a> 
+            <% } %> 
           </div>
           <%-body%>
           <footer class="container-fluid mt-3 px-4">
               <p class="float-right"><a href="#">Back to top</a></p>
-              <p>© 2020 ,<span class="text-warning"> Chennai</span><span class="text-success">Food</span><span class="text-dark">Org</span> Inc. · <a href="/suggest">Any Suggestions /Feedback? </a> · <a href="/about">About Us</a></p>
+              <p>© 2020 ,<span class="text-warning"> Chennai</span><span class="text-success">Food</span><span class="text-dark">Org</span> Inc. · <a href="/contact">Any Suggestions /Feedback? </a> · <a href="/about">About Us</a></p>
             </footer>
             <script src="/js/jquery/jquery-3.2.1.slim.min.js"></script>
             <script src="/js/bootstrap.min.js"></script>
